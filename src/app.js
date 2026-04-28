@@ -18,6 +18,22 @@ app.use(morgan("dev"));
 // Routes
 app.use("/api", reconciliationRoutes);
 
+// Root route for deployment verification
+app.get("/", (req, res) => {
+  res.json({
+    status: "online",
+    service: "KoinX Reconciliation Engine",
+    version: "1.0.0",
+    documentation: "/api/reconcile",
+    endpoints: [
+      "POST /api/reconcile",
+      "GET /api/report/:runId",
+      "GET /api/report/:runId/summary",
+      "GET /api/report/:runId/unmatched",
+    ],
+  });
+});
+
 // Health check
 app.get("/health", (req, res) => {
   res.json({
@@ -32,7 +48,7 @@ const startServer = async () => {
   try {
     await mongoose.connect(MONGODB_URI);
     console.log("Connected to MongoDB ✅");
-    console.log('http://localhost:' + PORT + '/health');
+    console.log("http://localhost:" + PORT + "/health");
   } catch (err) {
     console.error("Database connection error:", err.message);
     console.log(
