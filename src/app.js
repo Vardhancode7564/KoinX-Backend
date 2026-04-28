@@ -31,7 +31,8 @@ app.get("/health", (req, res) => {
 const startServer = async () => {
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log("Connected to MongoDB");
+    console.log("Connected to MongoDB ✅");
+    console.log('http://localhost:' + PORT + '/health');
   } catch (err) {
     console.error("Database connection error:", err.message);
     console.log(

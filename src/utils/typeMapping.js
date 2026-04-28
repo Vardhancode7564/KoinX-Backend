@@ -23,24 +23,14 @@ const OPPOSITE_TYPE_MAP = {
   WITHDRAWAL: "DEPOSIT",
 };
 
-/**
- * Normalize a transaction type string.
- * @param {string} type - Raw type from CSV
- * @returns {string} Normalized type
- */
+
 function normalizeType(type) {
   if (!type || typeof type !== "string") return "";
   const cleaned = type.trim().toLowerCase().replace(/[\s_-]+/g, "_");
   return TYPE_NORMALIZE_MAP[cleaned] || type.trim().toUpperCase();
 }
 
-/**
- * Check if two transaction types are compatible.
- * Types match if they are equal OR if one is the opposite perspective of the other.
- * @param {string} userType - Normalized user transaction type
- * @param {string} exchangeType - Normalized exchange transaction type
- * @returns {boolean}
- */
+
 function areTypesCompatible(userType, exchangeType) {
   if (userType === exchangeType) return true;
   return OPPOSITE_TYPE_MAP[exchangeType] === userType;
