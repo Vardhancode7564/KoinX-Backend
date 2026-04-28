@@ -44,7 +44,7 @@ const TransactionSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Index for faster matching
+
 TransactionSchema.index({ normalizedAsset: 1, normalizedType: 1, timestamp: 1 });
 
 module.exports = mongoose.model('Transaction', TransactionSchema);

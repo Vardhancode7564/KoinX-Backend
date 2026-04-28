@@ -1,8 +1,4 @@
-/**
- * Transaction type mapping utilities.
- * Handles normalization and opposite-perspective matching
- * (e.g., TRANSFER_IN on exchange = TRANSFER_OUT on user side).
- */
+
 
 // Canonical type normalization
 const TYPE_NORMALIZE_MAP = {

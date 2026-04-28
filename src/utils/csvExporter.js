@@ -1,29 +1,35 @@
-/**
- * CSV export utility for generating reconciliation report files.
- */
+
 
 const { stringify } = require("csv-stringify/sync");
-
 
 function exportToCSV(results) {
   if (!results || results.length === 0) {
     return "";
   }
 
-  const rows = results.map((r) => ({
-    Category: r.category,
-    Reason: r.reason,
-    User_TransactionID: r.userTransaction?.transactionId || "",
-    User_Date: r.userTransaction?.date || "",
-    User_Type: r.userTransaction?.type || "",
-    User_Asset: r.userTransaction?.asset || "",
-    User_Amount: r.userTransaction?.amount ?? "",
-    Exchange_TransactionID: r.exchangeTransaction?.transactionId || "",
-    Exchange_Date: r.exchangeTransaction?.date || "",
-    Exchange_Type: r.exchangeTransaction?.type || "",
-    Exchange_Asset: r.exchangeTransaction?.asset || "",
-    Exchange_Amount: r.exchangeTransaction?.amount ?? "",
-  }));
+  const rows = results.map((r) => {
+    const user = r.details?.user || {};
+    const exchange = r.details?.exchange || {};
+
+    return {
+      Category: r.category,
+      Reason: r.reason,
+      User_TransactionID: user.externalId || "",
+      User_Timestamp: user.timestamp
+        ? new Date(user.timestamp).toISOString()
+        : "",
+      User_Type: user.type || "",
+      User_Asset: user.asset || "",
+      User_Quantity: user.quantity ?? "",
+      Exchange_TransactionID: exchange.externalId || "",
+      Exchange_Timestamp: exchange.timestamp
+        ? new Date(exchange.timestamp).toISOString()
+        : "",
+      Exchange_Type: exchange.type || "",
+      Exchange_Asset: exchange.asset || "",
+      Exchange_Quantity: exchange.quantity ?? "",
+    };
+  });
 
   return stringify(rows, { header: true });
 }
